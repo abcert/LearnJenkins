@@ -1,5 +1,5 @@
 library(
-  identifier: 'JenkinsSharedLibrary',
+  identifier: 'JenkinsSharedLibrary@master',
   retriever: modernSCM(
     [
       $class: 'GitSCMSource',
