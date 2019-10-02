@@ -1,3 +1,14 @@
+library(
+  identifier: 'JenkinsSharedLibrary',
+  retriever: modernSCM(
+    [
+      $class: 'GitSCMSource',
+      remote: 'https://github.com/abcert/JenkinsSharedLibrary.git'
+    ]
+  )
+)
+
+
 pipeline {
     agent any
     stages {
