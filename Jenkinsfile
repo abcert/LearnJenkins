@@ -117,6 +117,7 @@ pipeline
                 }    
                 stage('SonarQube analysis') {
                     steps {
+                        echo 'sh "/usr/bin/sonar-scanner"'
                         //sh "/usr/bin/sonar-scanner"
                     }
                 }
