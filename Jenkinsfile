@@ -82,6 +82,7 @@ pipeline
                 }
                 stage('Publish Junit Report') {
                     steps {
+                        echo "junit allowEmptyResults: true, testResults: 'target/test-reports/*.xml'"
                         //junit allowEmptyResults: true, testResults: 'target/test-reports/*.xml'
                     }
                 }
