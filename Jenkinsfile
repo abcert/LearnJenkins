@@ -21,18 +21,18 @@ pipeline
         }
     }
     environment {
-        APP_NAME = 'billing-rest'
+        APP_NAME = 'LearnJenkins'
         BUILD_NUMBER = "${env.BUILD_NUMBER}"
         IMAGE_VERSION="v_${BUILD_NUMBER}"
-        GIT_URL="git@github.yourdomain.com:mpatel/${APP_NAME}.git"
+        GIT_URL="https://github.com/abcert/${APP_NAME}.git"
         GIT_CRED_ID='izleka2IGSTDK+MiYOG3b3lZU9nYxhiJOrxhlaJ1gAA='
-        REPOURL = 'cL5nSDa+49M.dkr.ecr.us-east-1.amazonaws.com'
+        //REPOURL = 'cL5nSDa+49M.dkr.ecr.us-east-1.amazonaws.com'
         SBT_OPTS='-Xmx1024m -Xms512m'
         JAVA_OPTS='-Xmx1024m -Xms512m'
-        WS_PRODUCT_TOKEN='FJbep9fKLeJa/Cwh7IJbL0lPfdYg7q4zxvALAxWPLnc='
-        WS_PROJECT_TOKEN='zwzxtyeBntxX4ixHD1iE2dOr4DVFHPp7D0Czn84DEF4='
-        HIPCHAT_TOKEN = 'SpVaURsSTcWaHKulZ6L4L+sjKxhGXCkjSbcqzL42ziU='
-        HIPCHAT_ROOM = 'NotificationRoomName'
+        //WS_PRODUCT_TOKEN='FJbep9fKLeJa/Cwh7IJbL0lPfdYg7q4zxvALAxWPLnc='
+        //WS_PROJECT_TOKEN='zwzxtyeBntxX4ixHD1iE2dOr4DVFHPp7D0Czn84DEF4='
+        //HIPCHAT_TOKEN = 'SpVaURsSTcWaHKulZ6L4L+sjKxhGXCkjSbcqzL42ziU='
+        //HIPCHAT_ROOM = 'NotificationRoomName'
     }
 
     options {
@@ -112,7 +112,8 @@ pipeline
                 }
                 stage('Execute Whitesource Analysis') {
                     steps {
-                        whitesource jobApiToken: '', jobCheckPolicies: 'global', jobForceUpdate: 'global', libExcludes: '', libIncludes: '', product: "${env.WS_PRODUCT_TOKEN}", productVersion: '', projectToken: "${env.WS_PROJECT_TOKEN}", requesterEmail: ''
+                        echo 'execute whitesource analysis'
+                        //whitesource jobApiToken: '', jobCheckPolicies: 'global', jobForceUpdate: 'global', libExcludes: '', libIncludes: '', product: "${env.WS_PRODUCT_TOKEN}", productVersion: '', projectToken: "${env.WS_PROJECT_TOKEN}", requesterEmail: ''
                     }
                 }    
                 stage('SonarQube analysis') {
@@ -134,6 +135,8 @@ pipeline
                 script {
                     branchName = getCurrentBranch()
                     shortCommitHash = getShortCommitHash()
+                    echo "BranchName-> [" + "${branchName} - " + "] CommitHash->[" + "${shortCommitHash}" + "]"
+                    /*
                     IMAGE_VERSION = "${BUILD_NUMBER}-" + branchName + "-" + shortCommitHash
                     sh 'eval $(aws ecr get-login --no-include-email --region us-west-2)'
                     sh "docker-compose build"
@@ -142,6 +145,7 @@ pipeline
                     sh "docker push ${REPOURL}/${APP_NAME}:latest"
 
                     sh "docker rmi ${REPOURL}/${APP_NAME}:${IMAGE_VERSION} ${REPOURL}/${APP_NAME}:latest"
+                    */
                 }
             }
         }
@@ -289,8 +293,8 @@ def notifyBuild(String buildStatus = 'STARTED') {
     }
 
     // Send notifications
-    hipchatSend(color: color, notify: true, message: summary, token: "${env.HIPCHAT_TOKEN}",
-        failOnError: true, room: "${env.HIPCHAT_ROOM}", sendAs: 'Jenkins', textFormat: true)
+    //hipchatSend(color: color, notify: true, message: summary, token: "${env.HIPCHAT_TOKEN}",
+    //    failOnError: true, room: "${env.HIPCHAT_ROOM}", sendAs: 'Jenkins', textFormat: true)
     if (buildStatus == 'FAILURE') {
         emailext attachLog: true, body: summary, compressLog: true, recipientProviders: [brokenTestsSuspects(), brokenBuildSuspects(), culprits()], replyTo: 'noreply@yourdomain.com', subject: subject, to: 'mpatel@yourdomain.com'
     }
