@@ -12,6 +12,8 @@ library(
 
 pipeline 
 {
+    agent any
+    /*
     agent {
         docker {
             image 'jenkinsslave:latest'
@@ -20,6 +22,7 @@ pipeline
             args '-v /home/centos/.ivy2:/home/jenkins/.ivy2:rw -v jenkins_opt:/usr/local/bin/opt -v jenkins_apijenkins:/home/jenkins/config -v jenkins_logs:/var/logs -v jenkins_awsconfig:/home/jenkins/.aws --privileged=true -u jenkins:jenkins'
         }
     }
+    */
     environment {
         APP_NAME = 'LearnJenkins'
         BUILD_NUMBER = "${env.BUILD_NUMBER}"
