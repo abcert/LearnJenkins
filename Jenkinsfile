@@ -40,7 +40,7 @@ environment {
 }
 
 options {
-    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '20'))
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '5'))
     timestamps()
     retry(3)
     timeout time:10, unit:'MINUTES'
