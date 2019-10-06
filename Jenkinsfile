@@ -132,7 +132,8 @@ pipeline
                 }
                 stage('ArchiveArtifact') {
                     steps {
-                        archiveArtifacts '**/target/universal/*.zip'
+                        echo "ArchiveArtifact"
+                        //archiveArtifacts '**/target/universal/*.zip'
                     }
                 }
             }    
