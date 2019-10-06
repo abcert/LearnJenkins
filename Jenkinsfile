@@ -38,12 +38,16 @@ pipeline
         //HIPCHAT_ROOM = 'NotificationRoomName'
     }
 
+/*
     options {
         buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '10', numToKeepStr: '5'))
         timestamps()
         retry(3)
         timeout time:10, unit:'MINUTES'
     }
+
+    */
+
     parameters {
         string(defaultValue: "develop", description: 'Branch Specifier', name: 'SPECIFIER')
         booleanParam(defaultValue: false, description: 'Deploy to QA Environment ?', name: 'DEPLOY_QA')
@@ -299,6 +303,7 @@ def notifyBuild(String buildStatus = 'STARTED') {
     //hipchatSend(color: color, notify: true, message: summary, token: "${env.HIPCHAT_TOKEN}",
     //    failOnError: true, room: "${env.HIPCHAT_ROOM}", sendAs: 'Jenkins', textFormat: true)
     if (buildStatus == 'FAILURE') {
-        emailext attachLog: true, body: summary, compressLog: true, recipientProviders: [brokenTestsSuspects(), brokenBuildSuspects(), culprits()], replyTo: 'noreply@yourdomain.com', subject: subject, to: 'mpatel@yourdomain.com'
+        echo "Email Sent"
+        //emailext attachLog: true, body: summary, compressLog: true, recipientProviders: [brokenTestsSuspects(), brokenBuildSuspects(), culprits()], replyTo: 'noreply@yourdomain.com', subject: subject, to: 'mpatel@yourdomain.com'
     }
 }
