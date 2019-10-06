@@ -84,7 +84,8 @@ pipeline
             parallel {
                 stage('Publish FindBugs Report') {
                     steps {
-                        step([$class: 'FindBugsPublisher', canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', pattern: 'target/scala-2.11/findbugs/report.xml', unHealthy: ''])
+                        echo "FindBugsPublisher"
+                        //step([$class: 'FindBugsPublisher', canComputeNew: false, defaultEncoding: '', excludePattern: '', healthy: '', includePattern: '', pattern: 'target/scala-2.11/findbugs/report.xml', unHealthy: ''])
                     }
                 }
                 stage('Publish Junit Report') {
