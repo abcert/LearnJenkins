@@ -75,11 +75,21 @@ pipeline
             }
         }
         stage('Build') {
+            parallel {
+                stage ('Build Java/Scala Projects'){
                     steps {
-                        echo 'Run coverage and CLEAN UP Before please'
+                        echo 'Build Java/Scala Project using maven'
                         //sh '/usr/local/bin/opt/bin/sbtGitActivator; /usr/local/bin/opt/play-2.5.10/bin/activator -Dsbt.global.base=.sbt -Dsbt.ivy.home=/home/jenkins/.ivy2 -Divy.home=/home/jenkins/.ivy2 compile coverage test coverageReport coverageOff dist'
                     }
                 }
+                stage ('Build Scala Projects'){
+                    steps {
+                        echo 'Build Scala Project using SBT'
+                        //sh '/usr/local/bin/opt/bin/sbtGitActivator; /usr/local/bin/opt/play-2.5.10/bin/activator -Dsbt.global.base=.sbt -Dsbt.ivy.home=/home/jenkins/.ivy2 -Divy.home=/home/jenkins/.ivy2 compile coverage test coverageReport coverageOff dist'
+                    }
+                }
+            }
+        }
         stage('Publish Reports') {
             parallel {
                 stage('Publish FindBugs Report') {
@@ -163,7 +173,7 @@ pipeline
             parallel {
                 stage('Deploy to CI') {
                     steps {
-                        echo "Deploying to CI Environment."
+                        echo "Deploying to Dev Environment."
                     }
                 }
 
