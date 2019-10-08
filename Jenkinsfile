@@ -187,17 +187,21 @@ pipeline
                     }
                     steps {
                         echo "Deploy to QA..."
-                        def role = "Testers"
-                        echo "Retrieving users for ${role}..."
-                        def users = [:]
-                        def authStrategy = Jenkins.instance.getAuthorizationStrategy()
-                        if(authStrategy instanceof RoleBasedAuthorizationStrategy){
-                            def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
-                            sids.each { sid ->
-                                users[sid] = Jenkins.instance.getUser(sid).fullName
+                        script{
+                            def role = "Testers"
+                            echo "Retrieving users for ${role}..."
+                            def users = [:]
+                            def authStrategy = Jenkins.instance.getAuthorizationStrategy()
+                            if(authStrategy instanceof RoleBasedAuthorizationStrategy){
+                                def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
+                                sids.each { sid ->
+                                    users[sid] = Jenkins.instance.getUser(sid).fullName
+                                }
                             }
+                            println(users)
                         }
-                        println(users)
+                        
+                        
                     }
                 }
                 stage('Deploy to UAT') {
