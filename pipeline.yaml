@@ -1,1 +1,6 @@
-
+type: python
+runTests: true
+deployUponTestSuccess: true
+deployToolImage: bash
+deployCommand: command goes here to deploy to
+deployEnvironment: staging
