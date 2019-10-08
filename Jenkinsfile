@@ -188,17 +188,29 @@ pipeline
                     steps {
                         echo "Deploy to QA..."
                         script{
-                            def role = "Testers"
+                            //def role = "Testers"
                             echo "Retrieving users for ${role}..."
                             def users = [:]
+                            
+                            def currentUser = jenkins.model.Jenkins.instance.getAuthentication().getName();
+                            def roleMap= authStrategy.roleMaps.get("globalRoles")
+
+                            def sids= roleMap.getSidsForRole("Testers")
+                            if(sids != null && sids.contains(currentUser)) {
+                                //result.add("dev1")
+                                echo "found testers for approval"
+                            }
+
+
+                            /*
                             def authStrategy = Jenkins.instance.getAuthorizationStrategy()
                             if(authStrategy instanceof RoleBasedAuthorizationStrategy){
-                                def sids = authStrategy.roleMaps.getRoleMap(RoleType.Global).getSidsForRole(role)
-                                //def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
+                                def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
                                 sids.each { sid ->
                                     users[sid] = Jenkins.instance.getUser(sid).fullName
                                 }
                             }
+                            */
                             println(users)
                         }
                         
