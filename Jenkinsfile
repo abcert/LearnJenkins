@@ -1,5 +1,7 @@
 #!groovy
 
+import com.michelin.cio.hudson.plugins.rolestrategy.*
+
 library(
   identifier: 'JenkinsSharedLibrary@master',
   retriever: modernSCM(
