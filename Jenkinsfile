@@ -193,7 +193,8 @@ pipeline
                             def users = [:]
                             def authStrategy = Jenkins.instance.getAuthorizationStrategy()
                             if(authStrategy instanceof RoleBasedAuthorizationStrategy){
-                                def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
+                                def sids = authStrategy.roleMaps.getRoleMap(RoleType.Global).getSidsForRole(role)
+                                //def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
                                 sids.each { sid ->
                                     users[sid] = Jenkins.instance.getUser(sid).fullName
                                 }
