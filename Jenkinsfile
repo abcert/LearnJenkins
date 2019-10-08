@@ -65,7 +65,7 @@ pipeline
                     echo "Deploy to QA? :: ${params.DEPLOY_QA}"
                     echo "Deploy to UAT? :: ${params.DEPLOY_UAT}"
                     echo "Deploy to PROD? :: ${params.DEPLOY_PROD}"
-                    sh 'rm -rf target/universal/*.zip'
+                    //sh 'rm -rf target/universal/*.zip'
                 }
             }
         }
@@ -76,13 +76,13 @@ pipeline
         }
         stage('Build') {
             parallel {
-                stage ('Build Java/Scala Projects'){
+                stage ('Build Java/Scala Projects using Maven'){
                     steps {
                         echo 'Build Java/Scala Project using maven'
                         //sh '/usr/local/bin/opt/bin/sbtGitActivator; /usr/local/bin/opt/play-2.5.10/bin/activator -Dsbt.global.base=.sbt -Dsbt.ivy.home=/home/jenkins/.ivy2 -Divy.home=/home/jenkins/.ivy2 compile coverage test coverageReport coverageOff dist'
                     }
                 }
-                stage ('Build Scala Projects'){
+                stage ('Build Scala Projects using SBT'){
                     steps {
                         echo 'Build Scala Project using SBT'
                         //sh '/usr/local/bin/opt/bin/sbtGitActivator; /usr/local/bin/opt/play-2.5.10/bin/activator -Dsbt.global.base=.sbt -Dsbt.ivy.home=/home/jenkins/.ivy2 -Divy.home=/home/jenkins/.ivy2 compile coverage test coverageReport coverageOff dist'
@@ -185,6 +185,17 @@ pipeline
                     }
                     steps {
                         echo "Deploy to QA..."
+                        def role = "Testers"
+                        echo "Retrieving users for ${role}..."
+                        def users = [:]
+                        def authStrategy = Jenkins.instance.getAuthorizationStrategy()
+                        if(authStrategy instanceof RoleBasedAuthorizationStrategy){
+                        def sids = authStrategy.roleMaps.globalRoles.getSidsForRole(role)
+                        sids.each { sid ->
+                                users[sid] = Jenkins.instance.getUser(sid).fullName
+                        }
+
+                        println(users)
                     }
                 }
                 stage('Deploy to UAT') {
